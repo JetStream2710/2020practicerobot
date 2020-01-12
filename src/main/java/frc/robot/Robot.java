@@ -7,22 +7,22 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import frc.robot.subsystems.Drivetrain;
 
 import com.revrobotics.ColorSensorV3;
+import com.kauailabs.navx.frc.AHRS;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
+
+  public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -30,23 +30,15 @@ public class Robot extends TimedRobot {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
-
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic() {
 
-    System.out.println("constant: " + Constants.ADC_TO_RGB_CONSTANT);
+//    System.out.println("constant: " + Constants.ADC_TO_RGB_CONSTANT);
 
 //    System.out.println((float) 256/262144);
 //    Color detectedColor = m_colorSensor.getColor();
@@ -59,7 +51,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("ADC Green", green);
     SmartDashboard.putNumber("ADC Blue", blue);
     SmartDashboard.putNumber("IR", IR);
-    
+
     SmartDashboard.putNumber("Red", red*Constants.ADC_TO_RGB_CONSTANT);
     SmartDashboard.putNumber("Green", green*Constants.ADC_TO_RGB_CONSTANT);
     SmartDashboard.putNumber("Blue", blue*Constants.ADC_TO_RGB_CONSTANT);
@@ -117,6 +109,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    m_robotContainer.drivetrain.frontRightTalon.set(.2);
+    m_robotContainer.drivetrain.rearRightTalon.set(.2);
+
   }
 
   @Override

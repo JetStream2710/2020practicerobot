@@ -11,4 +11,14 @@ public final class Constants {
 
     static float ADC_TO_RGB_CONSTANT = (float) 255/262143;
 
+    public static final int DRIVETRAIN_FRONT_LEFT_TALON = 1;
+    public static final int DRIVETRAIN_REAR_LEFT_TALON = 2;
+
+    public static final int DRIVETRAIN_FRONT_RIGHT_TALON = 7;
+    public static final int DRIVETRAIN_REAR_RIGHT_TALON = 8;
+
+    public static final int JOYSTICK_DRIVER = 0;
+
+    public static final int DRIVER_MOVE_AXIS = 1;
+    public static final int DRIVER_ROTATE_AXIS = 2;
 }
