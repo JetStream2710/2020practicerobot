@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -50,11 +51,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("ADC Red", red);
     SmartDashboard.putNumber("ADC Green", green);
     SmartDashboard.putNumber("ADC Blue", blue);
-    SmartDashboard.putNumber("IR", IR);
 
-    SmartDashboard.putNumber("Red", red*Constants.ADC_TO_RGB_CONSTANT);
-    SmartDashboard.putNumber("Green", green*Constants.ADC_TO_RGB_CONSTANT);
-    SmartDashboard.putNumber("Blue", blue*Constants.ADC_TO_RGB_CONSTANT);
+    SmartDashboard.putNumber("IR", IR);
 
     int proximity = m_colorSensor.getProximity();
     SmartDashboard.putNumber("Proximity", proximity);
@@ -109,8 +107,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.drivetrain.frontRightTalon.set(.2);
-    m_robotContainer.drivetrain.rearRightTalon.set(.2);
+//    m_robotContainer.drivetrain.frontRightTalon.set(.2);
+//    m_robotContainer.drivetrain.rearRightTalon.set(.2);
 
   }
 

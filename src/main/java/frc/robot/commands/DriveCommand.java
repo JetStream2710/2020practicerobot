@@ -18,7 +18,7 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     double moveSpeed = -1 * RobotContainer.joystick.getRawAxis(Constants.DRIVER_MOVE_AXIS);
     double rotateSpeed = -1* RobotContainer.joystick.getRawAxis(Constants.DRIVER_ROTATE_AXIS);
-    System.out.println("execute movespeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
+//    System.out.println("execute movespeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
     RobotContainer.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
 
   }

@@ -44,10 +44,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void arcadeDrive(final double moveSpeed, final double rotateSpeed) {
-    System.out.println("arcade drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
-//    differentialDrive.arcadeDrive(moveSpeed, rotateSpeed);
-    frontRightTalon.set(.2);
-    rearRightTalon.set(.2);
+//    System.out.println("arcade drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
+    differentialDrive.arcadeDrive(moveSpeed, rotateSpeed);
+//    frontRightTalon.set(.2);
+//    rearRightTalon.set(.2);
   }
 
   @Override
