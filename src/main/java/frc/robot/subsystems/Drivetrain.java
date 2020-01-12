@@ -40,6 +40,7 @@ public class Drivetrain extends SubsystemBase {
     SpeedControllerGroup rightGroup = new SpeedControllerGroup(frontRightTalon, rearRightTalon);
 
     differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
+    differentialDrive.setDeadband(0.02);
   }
 
   public void arcadeDrive(final double moveSpeed, final double rotateSpeed) {
