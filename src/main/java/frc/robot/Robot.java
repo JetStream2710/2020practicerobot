@@ -15,21 +15,20 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
-import frc.robot.subsystems.Drivetrain;
 
 import com.revrobotics.ColorSensorV3;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Robot extends TimedRobot {
 
-  public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+//  public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
-  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
   @Override
   public void robotInit() {
@@ -43,10 +42,11 @@ public class Robot extends TimedRobot {
 
 //    System.out.println((float) 256/262144);
 //    Color detectedColor = m_colorSensor.getColor();
-    double IR = m_colorSensor.getIR();
-    double red = m_colorSensor.getRed();
-    double green = m_colorSensor.getGreen();
-    double blue = m_colorSensor.getBlue();
+    double IR = colorSensor.getIR();
+    double red = colorSensor.getRed();
+    double green = colorSensor.getGreen();
+    double blue = colorSensor.getBlue();
+    double max;
 
     SmartDashboard.putNumber("ADC Red", red);
     SmartDashboard.putNumber("ADC Green", green);
@@ -54,10 +54,47 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("IR", IR);
 
-    int proximity = m_colorSensor.getProximity();
+    int proximity = colorSensor.getProximity();
     SmartDashboard.putNumber("Proximity", proximity);
 
     CommandScheduler.getInstance().run();
+
+    max = red;
+    if (green > max){
+      max = green;
+    }
+    if (blue > max){
+      max = blue;
+    }
+
+    boolean hasRed = red > (0.8 * max);
+    boolean hasGreen = green > (0.8 * max);
+    boolean hasBlue = blue > (0.8 * max);
+    boolean hasYellow = hasRed && hasGreen && !hasBlue;
+
+    if (hasYellow){
+      System.out.println("yellow");
+    }
+    else if (hasRed){
+      System.out.println("red");
+    }
+    else if (hasGreen){
+      System.out.println("green");
+    }
+    else if (hasBlue){
+      System.out.println("blue");
+    }
+
+    // colorSensor.getColor();
+    // switch (colorSensor.getColor()) {
+    //   case kCyan:
+    //       System.out.println("I see cyan");
+    //   case kGreen:
+    //       System.out.println("I see green");
+      
+    //   default:
+    //       System.out.println("Didn't recognize any color");
+    //   }
   }
 
   /**
