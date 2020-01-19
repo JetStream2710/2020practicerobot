@@ -12,14 +12,16 @@ public class Vision {
     public double horizOffset;    //  Horizontal angle error
     public double vertOffset;     // Vertical angle error
     public double skew;           // Skew angle of target, -45 to +45 degrees
-    
+    public double horizontal;
+    public double vertical;
+
     public double areaFromCamera,ledMode;
 
     public double[] cornX, cornY;
 
     private NetworkTableEntry ledM, pipeline, camMode, stream, snapshot;
-    private NetworkTableEntry nteX, nteY, nteA, nteS;
-    private NetworkTableEntry nteV, nteCornX, nteCornY;
+    private NetworkTableEntry nteX, nteY, nteA, nteS, nteHor, nteVer;
+    private NetworkTableEntry nteV, nteL, nteCornX, nteCornY;
 
     private double[] defaultArray = new double[0];          // Default value for returning arrays for networktables
 
@@ -28,7 +30,7 @@ public class Vision {
      */
     public Vision() {
 
-        inst.startClientTeam(6554);
+//        inst.startClientTeam(6554);
 
         ledM = limelight.getEntry("ledMode");
         camMode = limelight.getEntry("camMode");
@@ -38,10 +40,13 @@ public class Vision {
     
         nteX = limelight.getEntry("tx");
         nteY = limelight.getEntry("ty");
-        nteA = limelight.getEntry("ta");
-        nteS = limelight.getEntry("ts");
+        nteA = limelight.getEntry("ta"); // area
+        nteS = limelight.getEntry("ts"); //skew
+        nteHor = limelight.getEntry("thor"); // horizontal value
+        nteVer = limelight.getEntry("tvert"); // vertical value
 
-        nteV = limelight.getEntry("tv");
+        nteV = limelight.getEntry("tv"); // valid targets
+        nteL = limelight.getEntry("tl"); // latency
         nteCornX = limelight.getEntry("tcornx");
         nteCornY = limelight.getEntry("tcorny");
 
@@ -57,6 +62,8 @@ public class Vision {
         ledMode = ledM.getDouble(0);
         skew = nteS.getDouble(0);
         skew = (skew<-45) ? skew+90 : skew;  // convert skew from (-90, 0) to (-45, 45)
+        horizontal = nteHor.getDouble(0);
+        vertical = nteVer.getDouble(0);
 
         // When we read arrays from the network tables in two sequential statements, we could occasionally get the
         // X array and Y array from different passes of the vision pipeline, so they may not have the same
@@ -81,6 +88,10 @@ public class Vision {
         SmartDashboard.putNumber("Vision Y", vertOffset);
         SmartDashboard.putNumber("Vision Area", areaFromCamera);
         SmartDashboard.putNumber("Vision Skew", skew);
+        SmartDashboard.putNumber("Vision Horizontal", horizontal);
+        SmartDashboard.putNumber("Vision Vertical", vertical);
+         
+
     }
 
     // Turn the LEDS on

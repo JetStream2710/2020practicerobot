@@ -32,12 +32,12 @@ public class Robot extends TimedRobot {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
-//  private Vision vision;
+  private Vision vision;
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
-//    vision = new Vision();
+    vision = new Vision();
   }
 
   @Override
@@ -45,23 +45,25 @@ public class Robot extends TimedRobot {
 
 
     // limelight test code
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    double targetOffsetAngle_Horizontal = table.getEntry("tx").getDouble(0);
-    double targetOffsetAngle_Vertical = table.getEntry("ty").getDouble(0);
-    double targetArea = table.getEntry("ta").getDouble(0);
-    double targetSkew = table.getEntry("ts").getDouble(0);
+    // NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    // double targetOffsetAngle_Horizontal = table.getEntry("tx").getDouble(0);
+    // double targetOffsetAngle_Vertical = table.getEntry("ty").getDouble(0);
+    // double targetArea = table.getEntry("ta").getDouble(0);
+    // double targetSkew = table.getEntry("ts").getDouble(0);
+    
+    // System.out.println("horizontal: " + targetOffsetAngle_Horizontal);
+    // System.out.println("vertical: " + targetOffsetAngle_Vertical);
+    // System.out.println("area: " + targetArea);
+    // System.out.println("horizontal: " + targetSkew);
 
-    System.out.println("horizontal: " + targetOffsetAngle_Horizontal);
-    System.out.println("vertical: " + targetOffsetAngle_Vertical);
-    System.out.println("area: " + targetArea);
-    System.out.println("horizontal: " + targetSkew);
-
-//    vision.readCameraData();
+    vision.readCameraData();
 
 //    System.out.println("constant: " + Constants.ADC_TO_RGB_CONSTANT);
 
 //    System.out.println((float) 256/262144);
 //    Color detectedColor = m_colorSensor.getColor();
+
+/**
     double IR = colorSensor.getIR();
     double red = colorSensor.getRed();
     double green = colorSensor.getGreen();
@@ -85,6 +87,7 @@ public class Robot extends TimedRobot {
     if (blue > max){
       max = blue;
     }
+*/
 
 /**
  * blue: blue and green within 10 percent,, red less than 50%
@@ -93,10 +96,10 @@ public class Robot extends TimedRobot {
  * yellow: red at 50% value of green,, blue much smaller than red
  */
 
-    boolean hasRed = red == max;
-    boolean hasBlue = blue >= max*0.9;
-    boolean hasGreen = green == max && red < max*0.5 && blue < max*0.5;
-    boolean hasYellow = green == max && red > max*0.5 && red < max*0.8 && blue < max*0.5;
+//    boolean hasRed = red == max;
+//    boolean hasBlue = blue >= max*0.9;
+//    boolean hasGreen = green == max && red < max*0.5 && blue < max*0.5;
+//    boolean hasYellow = green == max && red > max*0.5 && red < max*0.8 && blue < max*0.5;
 
 /*
     // Test code for the color sensor
