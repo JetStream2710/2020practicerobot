@@ -10,8 +10,8 @@ public class Vision {
     NetworkTable limelight = inst.getTable("limelight");
 
     public double horizOffset;    //  Horizontal angle error
-    public double vertOffset;       // Vertical angle error
-    public double skew;         // Skew angle of target, -45 to +45 degrees
+    public double vertOffset;     // Vertical angle error
+    public double skew;           // Skew angle of target, -45 to +45 degrees
     
     public double areaFromCamera,ledMode;
 
@@ -28,7 +28,7 @@ public class Vision {
      */
     public Vision() {
 
-        inst.startClientTeam(6564);
+        inst.startClientTeam(6554);
 
         ledM = limelight.getEntry("ledMode");
         camMode = limelight.getEntry("camMode");
@@ -71,6 +71,8 @@ public class Vision {
             cornY = nteCornY.getDoubleArray(defaultArray);
             i++;
         } while (i<3 && (cornX.length != cornY.length || cornX.length<5));
+
+        System.out.println("horizontal offset: " + horizOffset + " vertical offset: " + vertOffset);
 
         SmartDashboard.putNumber("Vision cx.len", cornX.length);
         SmartDashboard.putNumber("Vision cy.len", cornY.length);

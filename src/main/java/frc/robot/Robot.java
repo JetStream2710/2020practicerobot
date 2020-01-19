@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,7 +23,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class Robot extends TimedRobot {
 
-//  public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+  public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   private Command m_autonomousCommand;
 
@@ -30,13 +32,31 @@ public class Robot extends TimedRobot {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
+//  private Vision vision;
+
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+//    vision = new Vision();
   }
 
   @Override
   public void robotPeriodic() {
+
+
+    // limelight test code
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    double targetOffsetAngle_Horizontal = table.getEntry("tx").getDouble(0);
+    double targetOffsetAngle_Vertical = table.getEntry("ty").getDouble(0);
+    double targetArea = table.getEntry("ta").getDouble(0);
+    double targetSkew = table.getEntry("ts").getDouble(0);
+
+    System.out.println("horizontal: " + targetOffsetAngle_Horizontal);
+    System.out.println("vertical: " + targetOffsetAngle_Vertical);
+    System.out.println("area: " + targetArea);
+    System.out.println("horizontal: " + targetSkew);
+
+//    vision.readCameraData();
 
 //    System.out.println("constant: " + Constants.ADC_TO_RGB_CONSTANT);
 
@@ -46,7 +66,6 @@ public class Robot extends TimedRobot {
     double red = colorSensor.getRed();
     double green = colorSensor.getGreen();
     double blue = colorSensor.getBlue();
-    double max;
 
     SmartDashboard.putNumber("ADC Red", red);
     SmartDashboard.putNumber("ADC Green", green);
@@ -59,7 +78,7 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
 
-    max = red;
+    double max = red;
     if (green > max){
       max = green;
     }
@@ -67,11 +86,20 @@ public class Robot extends TimedRobot {
       max = blue;
     }
 
-    boolean hasRed = red > (0.8 * max);
-    boolean hasGreen = green > (0.8 * max);
-    boolean hasBlue = blue > (0.8 * max);
-    boolean hasYellow = hasRed && hasGreen && !hasBlue;
+/**
+ * blue: blue and green within 10 percent,, red less than 50%
+ * green: green :D  w red and blue similar (less than 50&)
+ * red: red slightly higher than green
+ * yellow: red at 50% value of green,, blue much smaller than red
+ */
 
+    boolean hasRed = red == max;
+    boolean hasBlue = blue >= max*0.9;
+    boolean hasGreen = green == max && red < max*0.5 && blue < max*0.5;
+    boolean hasYellow = green == max && red > max*0.5 && red < max*0.8 && blue < max*0.5;
+
+/*
+    // Test code for the color sensor
     if (hasYellow){
       System.out.println("yellow");
     }
@@ -84,17 +112,17 @@ public class Robot extends TimedRobot {
     else if (hasBlue){
       System.out.println("blue");
     }
+    else {
+      System.out.println("no color detected");
+    }
+*/
+/*
+    // Test Code for the NavX
+		System.out.println("Angle: " + ahrs.getAngle() + " Yaw: " + ahrs.getYaw() +
+				" Pitch: " + ahrs.getPitch() + " Roll: " + ahrs.getRoll());
+    System.out.println("x: " + ahrs.getRawGyroX() + " y: " + ahrs.getRawGyroY() + " z: " + ahrs.getRawGyroZ());
+*/
 
-    // colorSensor.getColor();
-    // switch (colorSensor.getColor()) {
-    //   case kCyan:
-    //       System.out.println("I see cyan");
-    //   case kGreen:
-    //       System.out.println("I see green");
-      
-    //   default:
-    //       System.out.println("Didn't recognize any color");
-    //   }
   }
 
   /**
